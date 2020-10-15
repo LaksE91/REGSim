@@ -11,4 +11,4 @@ Recharge Estimation and Groundwater Simulation
 
 
 
-Licensed under [MIT License](LICESNE) 
+Licensed under [MIT License](LICENSE) 
