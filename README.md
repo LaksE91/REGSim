@@ -17,12 +17,12 @@ The entire set up was developed using six python modules which include:
 5.	Step_4a_Uncertainty_check.py – uncertainty using GLUE method.
 6.	Step_4b_Sensitivity.py – sensitivity analysis of the parameters using the cumulative distribution function
 
-
-
+# Example 
+This framework includes sample data (‘Data/sampledata.csv’) to demonstrate the function of REGSim. User documentation is included for further details. 
 
 
 
 ## License & copyright
 © Lakshmi Elangovan , IIT Hyderabad
 
-Licensed under [MIT License](LICENSE) 
+REGSim is licensed under the under [MIT License](LICENSE) 
