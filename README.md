@@ -3,6 +3,8 @@
 Recharge Estimation and Groundwater Simulation is a flexbile tool designed to estimate the recharge and simulate the groundwater levels by using a parsimonious groundwater model. This tool incorporates the two-step process: 
 1.	Simulation and optimization method
 2.	Uncertainty and sensitivity analysis
+
+
 It includes the estimation of lateral groundwater fluxes using Darcy’s law, calibration of the groundwater model by Non-dominated Sorting Genetic Algorithm (NSGA-II) and predicting the uncertainty bounds of groundwater head using Generalized Likelihood Uncertainty Estimation (GLUE) method.
 
 
