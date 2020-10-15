@@ -28,4 +28,4 @@ DOI : https://zenodo.org/badge/latestdoi/304316690
 
 © Lakshmi Elangovan , IIT Hyderabad
 
-REGSim is licensed under the under [MIT License](LICENSE) 
+REGSim is licensed under [MIT License](LICENSE) 
