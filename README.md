@@ -20,9 +20,12 @@ The entire set up was developed using six python modules which include:
 # Example 
 This framework includes sample data (‘Data/sampledata.csv’) to demonstrate the function of REGSim. User documentation is included for further details. 
 
+# Citation 
 
+DOI : https://zenodo.org/badge/latestdoi/304316690
 
 ## License & copyright
+
 © Lakshmi Elangovan , IIT Hyderabad
 
 REGSim is licensed under the under [MIT License](LICENSE) 
