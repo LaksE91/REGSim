@@ -1,7 +1,7 @@
 ###########################################################################
 ### Sensitivity analaysis using Cumulative distribution function        ###
 ### Author : Lakshmi E                                                  ###
-### Last Edit: 13-April-2020                                            ###
+### Last Edit: 25-March-2021                                            ###
 ###########################################################################
 
 import os
@@ -17,27 +17,38 @@ sys.path.insert(0, ".\Functions")
 from data_divide import data_sep
 from Gluerun import sim_glue, uncertain
 from ecdfplot import eplt
+from Utils import *
 
 
 ###################dataset for model#################################################
 #read the csv file  (input data)
-data                        = pd.read_csv(".\Data\sampledata.csv", header=0)
+
 df_Psets                    = pd.read_csv("random_lhs.csv", header = 0) 
-[input_calib,vald]          = data_sep(data) 
+filedir                     = 'C:\Users\Laks\Desktop\REGSim modified\Data' # update wiith user directory
+filename                    = 'sampledata.csv' # user's input dataset filname
+path                        = os.path.join(filedir,filename)
+#read the csv file  (input data)
+data                        = pd.read_csv(path,sep = ',',)
+## Column 1 -Time ## Column 2 groundwater head## Column 3 rainfall
+## Column 4- Potential evapotranspiration ##Column5&6 Lateral inflow and outflow
+input_data                  = sortinput(data)
+# sepearte the data for calibration and validation period 
+# data_sep(dataset,totalmonth_calibrationmonth)
+[input_calib,input_valid]   = data_sep(input_data,60,48)
 
 ###########################Simulation of the model##############################
-rech_case                   = input('Test case: ')                  # call the testcase index
-lb                          = input('lower Confidence interval:' )
-ub                          = input('upper Confidence interval:' )
-cutoff1                     = input('assign percentage of acceptable threshold:' )
-cutoff2                     = input('assign percentage of unacceptable threshold:' )
-h_max                       = input('possible maximum depth to water table(m):')
-area                        = input(' area of the study area boundary in m2 :' )#5536407425 
+rech_case                 =1                # call the testcase index
+lb                        = 0.05            #= input('lower Confidence interval:' )
+ub                        = 0.95            # = input('upper Confidence interval:' )
+cutoff1                   = 0.1             #input('assign percentage of acceptable threshold:' )
+cutoff2                   = 1- cutoff1      #input('assign percentage of unacceptable threshold:' )
+h_max                     = 30              #input('possible maximum depth to water table(m):')
+area                      =5536407425       # input(' area of the study area boundary in m2 :' )#5536407425 
 
 ####### behavioural set######
-[lb,ub,df_behav]                 = sim_glue(rech_case,data,input_calib,df_Psets,area,lb,ub,cutoff1,h_max,1)
+[lb,ub,df_behav]                 = sim_glue(rech_case,data,input_calib,df_Psets,area,lb,ub,cutoff1,h_max,0,1)
 ######## non-behavioural set#####
-[lb,ub,df_nbehav]                = sim_glue(rech_case,data,input_calib,df_Psets,area,lb,ub,cutoff2,h_max,2)
+[lb,ub,df_nbehav]                = sim_glue(rech_case,data,input_calib,df_Psets,area,lb,ub,cutoff2,h_max,0,2)
 
 ###########################plotting##################################################
 
