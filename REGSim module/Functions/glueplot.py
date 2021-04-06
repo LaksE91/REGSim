@@ -10,7 +10,7 @@ import numpy as np
 import matplotlib.patches as patches
 
 
-def myglueplot(df,test_case):
+def myglueplot(df,test_case,mv,month,time_axis):
     
     def get_handle_lists(l):
         """returns a list of lists of handles.
@@ -20,15 +20,9 @@ def myglueplot(df,test_case):
         for column in tree.get_children():
             for row in column.get_children():
                 yield row.get_children()[0].get_children()
-    
-    month           = ['01/2004','06/2004','01/2005','06/2005','12/2005','05/2006',
-                       '11/2006','06/2007','12/2007','05/2008','12/2008']#,'Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
-    
-    
-    time_axis               = np.arange(1,61,1)
+   
     f,ax                    = plt.subplots()
-    
-    
+   
     # plot the pareto-front of the objective functions
     ###############################################################################
 
@@ -37,7 +31,6 @@ def myglueplot(df,test_case):
     ub1              = ax.plot(time_axis, df.ub,'--',c='k',linewidth=2)
     du11             = ax.scatter(time_axis[:48], df.H[:48], color='r',marker='*',s=50)
     du21             = ax.scatter(time_axis[49:], df.H[49:], color='r',marker='P',s=50)
-    #ax3.axis([0, 60, 0.7*np.min(df.OH), 1.1*np.max(df.OH)])
     ax.axvline(x=48,linestyle='--',alpha= 0.4,c ='k')
     cd_int = input('Confidence_interval considered:')
     ax.text(2,3,'- - -  {}% Confidence interval'.format(cd_int),fontsize =10)
@@ -90,6 +83,6 @@ def myglueplot(df,test_case):
     handles1[1].set_edgecolors(["none", "red"])
 
     plt.tight_layout()
-    plt.savefig(".\ Results\glueplot_case{}.png".format(test_case),dpi=300,bbox_inches='tight')
+    plt.savefig(".\ Results\glueplot_case{}_modvar{}.png".format(test_case,mv),dpi=300,bbox_inches='tight')
 
     plt.show()
