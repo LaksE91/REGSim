@@ -14,8 +14,8 @@ The entire set up was developed using six python modules which include:
 2.	Step_1b_Estimation_of_lateralflow.py – estimate the average lateral flow 
 3.	Step_2_Calibration_of_the_model.py - calibrate the parameters using multi-objective optimization
 4.	Step_3_Validation_of_the_model.py – validate the model using the optimal parameter set
-5.	Step_4a_Uncertainty_check.py – uncertainty using GLUE method.
-6.	Step_4b_Sensitivity.py – sensitivity analysis of the parameters using the cumulative distribution function
+5.	Step_4a_Uncertainty_analysis.py – uncertainty using GLUE method.
+6.	Step_4b_Sensitivity_analysis.py – sensitivity analysis of the parameters using the cumulative distribution function
 
 # Example 
 This framework includes sample data (‘Data/sampledata.csv’) to demonstrate the function of REGSim. User documentation is included for further details. 
