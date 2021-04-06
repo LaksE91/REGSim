@@ -7,24 +7,18 @@ Created on Mon Jun  3 16:35:06 2019
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FormatStrFormatter
 from mpl_toolkits.mplot3d import Axes3D
+import matplotlib.dates as dates
 import numpy as np
 
 
 ## Function for the optimal pareto front for each recharge scenario.
-def paretoplot(df,test_case):
+def paretoplot(df,test_case,mv,s=100):
         
     fig = plt.figure()
     ax  = fig.add_subplot(111, projection='3d')
-    
-    # ideal point
-    x = max(-df.NSE)  
-    y = min(df.MAE)
-    z = min(df.RMSE)
-   
+
     # plot the pareto-front of the objective functions
-    ax.scatter(-df.NSE,df.MAE,df.RMSE,s=100,edgecolors='r',marker = '*',facecolors ='none')
-    ax.scatter(x,y,z, s=100,edgecolors='k',marker = 'o',facecolors ='black')
-    ax.text(x,y,z, 'Ideal point',size=14)
+    ax.scatter(-df.NSE,df.MAE,df.RMSE,s=s,edgecolors='r',marker = '*',facecolors ='none')
 
     if test_case ==1:
         title = ' (a) Case {}: constant recharge factor'.format(test_case)
@@ -46,14 +40,14 @@ def paretoplot(df,test_case):
     ax.locator_params(tight=True, nbins=3)
 
     plt.tight_layout()
-    plt.savefig(".\ Results\paretoplot_case{}.png".format(test_case),dpi=600,bbox_inches='tight')
+    plt.savefig(".\ Results\paretoplot_case{}_modvar{}.png".format(test_case,mv),dpi=600,bbox_inches='tight')
     plt.show()
 
 
 #function for validation plot between observed and simulated head
-def valplot(gwdata,gwhead,xaxis,months,test_case):
+def valplot(gwdata,gwhead,xaxis,months,test_case,mv):
     
-    fig,ax            = plt.subplots(figsize =(9,6))
+    fig,ax            = plt.subplots(figsize=(9,6))
     line1             = ax.plot(xaxis, gwhead,'--*',c='r',markersize=10,markerfacecolor="None",label='Simulated head')
     line2             = ax.plot(xaxis, gwdata,'o',markersize=8,markerfacecolor='k',markeredgecolor='none',label='Observed head')
     plt.axis([0, 60, 0.7*np.min(gwdata), 1.1*np.max(gwdata)])
@@ -73,19 +67,21 @@ def valplot(gwdata,gwhead,xaxis,months,test_case):
         title = ' (b) Case {}: two seasonal recharge factor'.format(test_case)
     if test_case ==3:
         title = ' (c) Case {}: three seasonal recharge factor'.format(test_case)
-        
+    
+    
     ax.set_title(title, fontsize=20)
     ax.set_xticks(xaxis)
     ax.set_xticklabels(xaxis,fontsize=15)
     ax.set_xticklabels(months, rotation='vertical', fontsize=12)
     ax.set_ylabel('GW head[m]',fontsize =20)
     plt.yticks(fontsize=15)
+    
     ax.xaxis.set_major_locator(plt.MaxNLocator(11))
     ax.yaxis.set_major_locator(plt.MaxNLocator(7))
     plt.xticks(fontsize=15,rotation='vertical')
     
     plt.legend(loc=4, numpoints=1, ncol =2,fontsize=16)
     plt.tight_layout()
-    plt.savefig(".\ Results\simhead_nsga_case{}.png".format(test_case),dpi=600,bbox_inches='tight')
+    plt.savefig(".\ Results\simhead_nsga_case{}_modvar{}.png".format(test_case,mv),dpi=600,bbox_inches='tight')
     plt.show()
     
