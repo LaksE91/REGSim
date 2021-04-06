@@ -103,7 +103,7 @@ def nsga2(rech_case,pcase,indata,area,mv,M=3,V=None,sy=None,Qp=None,r1=None,r11=
     df_opt["NSE"]       = [s.objectives[2] for s in result]
     
     # save the output into csv file
-    df_opt.to_csv(".\ Results\paretofront_case{}.txt".format(rech_case), 
+    df_opt.to_csv(".\ Results\paretofront_case{}_modvar{}.txt".format(rech_case,mv), 
                   sep='\t',index=False, header=True, encoding='utf-8')
     #
     # ploting pareto optimal front for each case
