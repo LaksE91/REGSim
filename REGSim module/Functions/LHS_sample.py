@@ -12,7 +12,7 @@ from pyDOE import lhs
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ptick
 
-def rand(noi,nos,p,sy,r1,r11,r12,r21,r22,r23):
+def rand(p,sy,r1,r11,r12,r21,r22,r23,nos,noi=8):
     
     lhs_samp = lhs(noi,samples=nos)
     pump                    = lhs_samp[:,0] * (p[1]-p[0]) + p[0]        # max pumping 
@@ -83,6 +83,12 @@ def rand(noi,nos,p,sy,r1,r11,r12,r21,r22,r23):
     
     print ('Histogram complete')
     return sample
+
+
+
+
+
+
 
 
 
