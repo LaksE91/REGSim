@@ -8,9 +8,9 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as ptick
 
 #Function defintion for cummulative distribution function plot 
-def eplt(evar_p,evar_q,test_case):
+def eplt(evar_p,evar_q,test_case,mv):
     
-    fig = plt.figure(figsize=(12,9))
+    fig = plt.figure(figsize=(12,7))
     
     fig.text(-0.001, 0.78, 'Cumulative probability',fontsize =16, va='center', rotation='vertical')
     if test_case ==1:
@@ -94,7 +94,7 @@ def eplt(evar_p,evar_q,test_case):
 
     plt.tight_layout()
     plt.subplots_adjust(left=0.05,top=0.9,bottom=0.1,wspace=0.6)
-    fig.savefig('.\ Results\ecdf_subplots_case_{}.png'.format(test_case), dpi=300, bbox_inches='tight')
+    fig.savefig('.\ Results\ecdf_subplots_case_{}_modvar{}.png'.format(test_case,mv), dpi=300, bbox_inches='tight')
     plt.show()
     #end of the script
     
