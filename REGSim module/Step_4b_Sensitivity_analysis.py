@@ -24,7 +24,7 @@ from Utils import *
 #read the csv file  (input data)
 
 df_Psets                    = pd.read_csv("random_lhs.csv", header = 0) 
-filedir                     = 'C:\Users\Laks\Desktop\REGSim modified\Data' # update wiith user directory
+filedir                     = 'C:\Users\Laks\Desktop\REGSim-main2\REGSim module\Data' # update wiith user directory
 filename                    = 'sampledata.csv' # user's input dataset filname
 path                        = os.path.join(filedir,filename)
 #read the csv file  (input data)
@@ -37,18 +37,18 @@ input_data                  = sortinput(data)
 [input_calib,input_valid]   = data_sep(input_data,60,48)
 
 ###########################Simulation of the model##############################
-rech_case                 =1                # call the testcase index
+rech_case                 = 1                # call the testcase index
 lb                        = 0.05            #= input('lower Confidence interval:' )
 ub                        = 0.95            # = input('upper Confidence interval:' )
 cutoff1                   = 0.1             #input('assign percentage of acceptable threshold:' )
 cutoff2                   = 1- cutoff1      #input('assign percentage of unacceptable threshold:' )
 h_max                     = 30              #input('possible maximum depth to water table(m):')
-area                      =5536407425       # input(' area of the study area boundary in m2 :' )#5536407425 
-
+area                      = 5536407425       # input(' area of the study area boundary in m2 :' )#5536407425 
+mv                        = 1  # model variant
 ####### behavioural set######
-[lb,ub,df_behav]                 = sim_glue(rech_case,data,input_calib,df_Psets,area,lb,ub,cutoff1,h_max,0,1)
+[lb,ub,df_behav]                 = sim_glue(rech_case,data,input_calib,df_Psets,area,lb,ub,cutoff1,h_max,1,1)
 ######## non-behavioural set#####
-[lb,ub,df_nbehav]                = sim_glue(rech_case,data,input_calib,df_Psets,area,lb,ub,cutoff2,h_max,0,2)
+[lb,ub,df_nbehav]                = sim_glue(rech_case,data,input_calib,df_Psets,area,lb,ub,cutoff2,h_max,1,2)
 
 ###########################plotting##################################################
 
@@ -144,7 +144,7 @@ if rech_case==3:
     evar_q = [qep1,qep2,qep3,qes1,qes2,qes3,qer1_21,qer2_21,qer3_21,qer1_22,qer2_22,qer3_22,qer1_23,qer2_23,qer3_23]
     evar_p = [pep1,pep2,pep3,pes1,pes2,pes3,per1_21,per2_21,per3_21,per1_22,per2_22,per3_22,per1_23,per2_23,per3_23]
 
-senplot = eplt(evar_p,evar_q,rech_case)
+senplot = eplt(evar_p,evar_q,rech_case,mv)
 
 print ('CDF plot are generated')
 # end of the script
