@@ -6,7 +6,7 @@ Created on Mon Mar  9 14:13:03 2020
 """
 import numpy as np
   
-def data_sep(dt):
+def data_sep(dt,totm,calm):
 
 ###################dataset for model#################################################
     # divide the data into calibration and validation period. 
@@ -14,8 +14,8 @@ def data_sep(dt):
     # groundwater head,lateral inflow and outflow. Hence we divide the data into 4 years 
     # or calibration and one year for validation for furture analysis
     
-    ty_nom              =  input('total number of months considered:')
-    ty_nomc             =  input('number of months considered for calibration:')
+    ty_nom              =  totm#input('total number of months considered:')
+    ty_nomc             =  calm #input('number of months considered for calibration:')
     
     try: 
         nom             = int(ty_nom)
