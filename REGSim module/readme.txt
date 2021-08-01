@@ -4,12 +4,12 @@
 #  parameter in the model				  #
 #							  #
 #  Author:Lakshmi Elangovan				  #
-#  Version: V.0.2 					  #
+#  Version: V.0.3 					  #
 #  Date: 3 April 2021					  #
 ###########################################################
 
 ##########################################################
-1. Step_2_Calibration_of_the_model.py
+1. Step_1_Calibration_of_the_model.py
 
 #enter the directory of the input dataset (.csv)
 filedir - enter the directory
@@ -24,9 +24,10 @@ input_data- sortinput(data)
 # data_sep(dataset,totalmonth_calibrationmonth)
 
 # function to call nsga2
-# nsga2(rech_case,indata,area,mv,M=3,V=None,sy=None,Qp=None,r1=None,r11=None,r12=None,r21=None,r22=None,r23=None)
+# nsga2(rech_case,pcase,indata,area,mv,M=3,V=None,sy=None,Qp=None,r1=None,r11=None,r12=None,r21=None,r22=None,r23=None)
 
 rech_case - recharge factor case 
+pcase - pumping condition
 indata -  total input dataset
 area - area of the study [sq.m]
 mv-  model variant condition  
@@ -44,17 +45,17 @@ r23- recharge factor for nonmonsoon for case-3
 #paretoplot(df_opt,rech_case,mv) - plot the pareto optimal front
 
 ############################################################################
-Step_3_Validation_of_the_model.py
+Step_2_Validation_of_the_model.py
 
 #input same as step_2
 
 # function to call
-valsim(rech_case,indat,area,mv,sy,Qp,r=None,r11=None,r12=None,r21=None,r22=None,r23=None)
+valsim(rech_case,pcase,indat,area,mv,sy,Qp,r=None,r11=None,r12=None,r21=None,r22=None,r23=None)
 
 # valplot(obsv_head,gwhead,tcount,months,1)- plot the validation GW head vs observed head
 ##########################################################################
 
-Step_4a_Uncertanity_analysis.py
+Step_3a_Uncertanity_analysis.py
 
 # dataset same as Step-2:
 
@@ -82,10 +83,10 @@ mv 	    - model variant (0- P and 1 for P-PE)
 Psets       - ransom sampled parameter set
 
 # call the GLUE function to perform uncertainty analysis
-#uncertain(rech_case,data,calib,Psets,area,lb,ub,c,h_max,mv,tb)
+#uncertain(rech_case,pcase,data,calib,Psets,area,lb,ub,c,h_max,mv,tb)
 
 #############################################################################333
-Step_4b_Sensitivity_analysis.py
+Step_3b_Sensitivity_analysis.py
 
 # inputs are same as Step_4a
 sim_glue(rech_case,data,calib,Psets,area,lb,ub,c,h_max,mv,tb)
@@ -93,3 +94,15 @@ sim_glue(rech_case,data,calib,Psets,area,lb,ub,c,h_max,mv,tb)
 ecdf(sample)
 # function to plot CDF
 eplt(evar_p,evar_q,rech_case,mv)
+
+########################################################################
+Step_4_Simulationmode.py
+
+#input future climate data (rainfall and potential evapotranspiration)
+# input single parameter set (spara) or multiple parameter set (mpara)
+# simulation  for single parameter set
+gwpred_single           = simrun(rech_case, pcase, mv, inputdata, spara, area, intH, hmax)
+# simulation for multiple parameter set
+gwpred_multi            = simrun(rech_case, pcase, mv, inputdata, mpara, area, 
+intH, hmax)
+# plot the timeseries for both condition (single and multiple)
