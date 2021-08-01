@@ -10,7 +10,7 @@ import numpy as np
 from numpy import arange, sin, pi, cos
 import matplotlib.pyplot as plt
 
-def sinefunc(t,pmax,pmin):
+def sinefunc(t,pmax,pmin,phi=0):
     P_rang  = [pmin,pmax] 
     c       = np.mean(P_rang)  # midline
     A       = float(pmax- c)  # amplitude 
@@ -18,7 +18,7 @@ def sinefunc(t,pmax,pmin):
     sinp    = []
     
     for i in t:
-        sinp.append((A*sin((2*pi*i)/T)) +c) 
+        sinp.append(A*sin((((2*pi*i)/T)+phi)) +c) 
     return sinp
               
 def linearfunc(t,pmax,pmin):

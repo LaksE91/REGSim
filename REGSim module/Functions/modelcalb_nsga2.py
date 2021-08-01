@@ -6,9 +6,9 @@ Created on Mon Oct 22 15:20:00 2018
 """
 import numpy as np
 import numpy.matlib
-from metrics import *
+from metrics import rmse_metric, mae_metric, nse_metric
 from Utils import fillrech
-from pumpfunc import *
+from pumpfunc import sinefunc, linearfunc, stepfunc, trapzfunc
 
 ## choice of selecting the return output
 class choicedata():
@@ -33,11 +33,11 @@ def modelrun(Pset,var,area,test_case,mv,pcase):
         return er
 
     def pevap():
-        er                    = (pdata-pedata)/1000
-        sort_er           = [i if i>0 else 0 for i in er]
+        er = (pdata - pedata)/1000
+        sort_er = [i if i > 0 else 0 for i in er]
         return sort_er
     
-    switcher ={
+    switcher = {
             0: precp,
             1: pevap,
             } 
@@ -53,65 +53,62 @@ def modelrun(Pset,var,area,test_case,mv,pcase):
    
 # Check the lateral flow inclusion
     try:
-        qin                = np.array(var.Qin) # Lateral inflow
-        qout               = np.array(var.Qin) # lateral outflow
+        qin = np.array(var.Qin)   # Lateral inflow
+        qout = np.array(var.Qin)   # lateral outflow
     except:
-        qin                = np.zeros(len(gwdata))
-        qout               = np.zeros(len(gwdata))
+        qin = np.zeros(len(gwdata))
+        qout = np.zeros(len(gwdata))
         
 # Parameterization         
-    Sy                     = float(Pset[0]) #specific yield
-    Qpmax                  = float(Pset[1]) # pumping discharge
+    Sy = float(Pset[0])   # specific yield
+    Qpmax = float(Pset[1])   # pumping discharge
 
 #get the number of months of avialable data
-    nummonths              = len(gwdata)
-    numyears               = nummonths/12
+    nummonths = len(gwdata)
+    numyears = nummonths/12
 
 # func call to generate the recharge factor    
-    rechargetimes= fillrech(test_case,var,Pset,summer=6, winter=10, monsoon=None)
+    rechargetimes = fillrech(test_case, var, Pset, summer=6, winter=10, monsoon=None)
 # max pumping with 50% less in monsoon and 100% in nonmonsoon season
-    if pcase ==1:
-        tm                      = (np.arange(1,13,1)) # monthly data
-        Qp                      = np.array(sinefunc(tm,Qpmax,0.5*Qpmax))  # sine function
-        #Qp                     = np.array([1,1,1,1,1,1,0.5,0.5,0.5,0.5,1,1])
-        pumping                 = Qp*10**6  #*p
+    if pcase == 1:
+        tm = (np.arange(1, 13, 1))   # monthly data
+        Qp = np.array(sinefunc(tm, Qpmax, 0.5*Qpmax,phi=0))  # sine function
+        pumping = Qp * 10**6   # MCM
     if pcase==2:
-        tm                      = (np.arange(1,13,1))
-        Qp                      = np.array(linearfunc(tm,Qpmax,0.5*Qpmax)) 
-        pumping                 = Qp*10**6  #*p
+        tm = (np.arange(1, 13, 1))
+        Qp = np.array(linearfunc(tm, Qpmax, 0.5*Qpmax)) 
+        pumping = Qp * 10**6 
     if pcase ==3:
-        tm                      = (np.arange(1,13,1))
-        Qp                      = np.array(stepfunc(tm,Qpmax,0.5*Qpmax)) 
-        pumping                 = Qp*10**6  #*p
+        tm = (np.arange(1, 13, 1))
+        Qp = np.array(stepfunc(tm, Qpmax, 0.5*Qpmax)) 
+        pumping = Qp *10**6  
     if pcase==4:
-        tm                      = (np.arange(1,13,1))
-        Qp                      = np.array(trapzfunc(tm,Qpmax)) 
-        pumping                 = Qp*10**6  #*p
-    
+        tm = (np.arange(1, 13, 1))
+        Qp = np.array(trapzfunc(tm, Qpmax)) 
+        pumping = Qp *10**6  
 # repeat the data for the respective years
-    pumptimes              = numpy.matlib.repmat(pumping,1,numyears)
-    pumptimes              = pumptimes.reshape(nummonths)
+    pumptimes = numpy.matlib.repmat(pumping, 1, numyears)
+    pumptimes = pumptimes.reshape(nummonths)
 
 #assign Constant and initial variables as an input to the model
-    gwhead                 = np.zeros(nummonths) 
-    gwhead[0]              = gwdata[0]            # initial head
-    effectiveer            = model_variant(mv)    # converting millimeter to meter
+    gwhead = np.zeros(nummonths) 
+    gwhead[0] = gwdata[0]            # initial head
+    effectiveer = model_variant(mv)    # converting millimeter to meter
 
 # iteration of the model starts
     for m in range(1,nummonths):
-        rh                 = (effectiveer[m]*rechargetimes[m])/Sy 
-        ph                 = (pumptimes[m]/(Sy*area))
-        lh                 = ((qin[m]-qout[m])/(Sy*area))
-        gwhead[m]          = (gwhead[m-1] - rh + ph -lh)
+        rh = (effectiveer[m]*rechargetimes[m])/Sy 
+        ph = (pumptimes[m]/(Sy*area))
+        lh = ((qin[m]-qout[m])/(Sy*area))
+        gwhead[m] = (gwhead[m-1]-rh+ph-lh)
 
 # calculate the metrics
-    rmse                   = rmse_metric(gwdata,gwhead) # minimize
-    mae                    = mae_metric(gwdata,gwhead)  # minimize
-    nse                    = -nse_metric(gwdata,gwhead) # maximize   
-    return rmse,mae,nse,gwhead
+    rmse = rmse_metric(gwdata, gwhead)  # minimize
+    mae = mae_metric(gwdata, gwhead)   # minimize
+    nse = -nse_metric(gwdata, gwhead)  # maximize   
+    return rmse, mae, nse, gwhead
 
 # Calbration process for the model
-def sim_mod(Pset,var,area,test_case,mv,pcase):
-    choice_data= modelrun(Pset,var,area,test_case,mv,pcase)
-    return choice_data[0], choice_data[1],choice_data[2]
-
+def sim_mod(Pset, var, area, test_case, mv, pcase):
+    choice_data= modelrun(Pset, var, area, test_case, mv, pcase)
+    return choice_data[0], choice_data[1], choice_data[2]
