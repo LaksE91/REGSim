@@ -16,13 +16,14 @@ The entire set up was developed using six python modules which include:
 4.	Step_3_Validation_of_the_model.py – validate the model using the optimal parameter set
 5.	Step_4a_Uncertainty_analysis.py – uncertainty using GLUE method.
 6.	Step_4b_Sensitivity_analysis.py – sensitivity analysis of the parameters using the cumulative distribution function
+7.	Step_5_Simualtionmode.py - validation for future condition
 
 # Example 
 This framework includes sample data (‘Data/sampledata.csv’) to demonstrate the function of REGSim. User documentation is included for further details. 
 
 # Citation 
 
-DOI : https://zenodo.org/badge/latestdoi/304316690
+DOI : https://doi.org/10.5281/zenodo.5151424
 
 ## License & copyright
 
